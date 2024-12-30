@@ -22,10 +22,12 @@ const Post = ({post}) => {
         if(!liked){
             await axios.get(`https://banao-task-2-backend-lovat.vercel.app/post/like/${post._id}`);
             setLikes((prev)=>++prev);
+            post.likes++;
             setLiked(true);
         }else{
             await axios.get(`https://banao-task-2-backend-lovat.vercel.app/post/unlike/${post._id}`);
             setLikes((prev)=>--prev);
+            post.likes--;
             setLiked(false);
         }
     }
@@ -47,7 +49,12 @@ const Post = ({post}) => {
 
     useEffect(()=>{
         setOpenComment(false);
-    }, [postType])
+    }, [postType]);
+
+    useEffect(()=>{
+        setLikes(post.likes);
+        setLiked(false);
+    },[post, postType]);
 
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
