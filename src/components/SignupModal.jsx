@@ -12,7 +12,7 @@ const SignupModal = ({showSignUpModal, setIsLogged, setShowSignUpModal}) => {
     const handleSubmit = async (e) =>{
         e.preventDefault();
         if(signin){
-            const result = await axios.post('http://localhost:5000/auth/login', formData);
+            const result = await axios.post('https://banao-task-2-backend-lovat.vercel.app/auth/login', formData);
             // setIsLogged(true);
             if(result.data.authenticatedUser){
                 toast.success("Login Successful");
@@ -25,7 +25,7 @@ const SignupModal = ({showSignUpModal, setIsLogged, setShowSignUpModal}) => {
         }else{
             if(formData?.password !== formData?.re_password)
                 return console.log("Recheck password");
-            axios.post('http://localhost:5000/auth/register', formData);
+            axios.post('https://banao-task-2-backend-lovat.vercel.app/auth/register', formData);
             setSignin(true);
             document.body.classList.remove('overflow-hidden');
         }
