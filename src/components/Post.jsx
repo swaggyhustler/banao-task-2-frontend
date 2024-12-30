@@ -17,7 +17,7 @@ const Post = ({post}) => {
     }
 
     const handleDelete = async () => {
-        await axios.delete(`https://banao-task-2-backend-zeta.vercel.app/post/delete/${post._id}`);
+        await axios.delete(`https://banao-task-2-backend-lovat.vercel.app/post/delete/${post._id}`);
         const newPosts = posts.filter((ele)=>{
             return ele._id!==post._id;
         });
