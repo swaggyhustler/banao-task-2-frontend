@@ -4,12 +4,31 @@ import EditModal from "./EditModal";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { GlobalContext } from "../contexts/GlobalContext";
+import SendIcon from "../assets/send.png";
 
 const Post = ({post}) => {
     const [openMenu, setOpenMenu] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
+    const [likes, setLikes] = useState(post.likes);
+    const [liked, setLiked] = useState(false);
+    const [openComment, setOpenComment] = useState(false);
+    const [formData, setFormData] = useState("");
+    const [comments, setComments] = useState("");
+
     const menuRef = useRef();
-    const {posts, setPosts} = useContext(GlobalContext);
+    const {posts, setPosts, postType} = useContext(GlobalContext);
+
+    const handleLike = async () =>{
+        if(!liked){
+            await axios.get(`https://banao-task-2-backend-lovat.vercel.app/post/like/${post._id}`);
+            setLikes((prev)=>++prev);
+            setLiked(true);
+        }else{
+            await axios.get(`https://banao-task-2-backend-lovat.vercel.app/post/unlike/${post._id}`);
+            setLikes((prev)=>--prev);
+            setLiked(false);
+        }
+    }
 
     const handleEdit = () =>{
         setOpenEdit((prev)=>!prev);
@@ -23,6 +42,24 @@ const Post = ({post}) => {
         });
         setPosts(newPosts);
         toast.success("Post Deleted");
+    }
+
+
+    useEffect(()=>{
+        setOpenComment(false);
+    }, [postType])
+
+    const handleCommentSubmit = async (e) => {
+        e.preventDefault();
+        await axios.post("https://banao-task-2-backend-lovat.vercel.app/post/comment", {comment: formData, id: post._id});
+        setComments((prev)=>[...prev, formData]);
+        post.comments.push(formData);
+        setFormData("");
+    }
+
+    const handleComment = async () => {
+        setComments(post.comments);
+        setOpenComment((prev)=>!prev);
     }
 
     useEffect(() => {
@@ -73,7 +110,9 @@ const Post = ({post}) => {
                         <div className="rounded-full bg-black w-10 h-10"></div>
                         John Doe
                     </div>
-                    <div className="flex gap-8 items-center">
+                    <div className="flex gap-4 lg:gap-8 items-center">
+                        <button onClick={handleLike}><i className={liked?`fa-solid fa-heart fa-lg md:fa-xl text-red-600`:`fa-regular fa-lg md:fa-xl fa-heart`} /> {likes}</button>
+                        <button onClick={handleComment}><i className="fa-regular fa-lg md:fa-xl fa-comment" /> {post.comments.length}</button>
                         <p>{post.views} views</p>
                         <svg width="42" height="36" viewBox="0 0 42 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect width="42" height="36" rx="2" fill="#EDEEF0" />
@@ -88,6 +127,23 @@ const Post = ({post}) => {
                         </svg>
                     </div>
                 </div>
+                {
+                    openComment?
+                    <div className="bg-slate-300 p-2 flex flex-col items-center gap-2 rounded-lg">
+                    <h1 className="self-start font-semibold text-xl ml-2">Comments</h1>
+                    <div className="w-full rounded-lg p-2 flex flex-col gap-2">
+                        {   
+                            comments.length>0?
+                            comments.map((comment, index)=> <div className="bg-white w-full rounded-lg p-2 flex items-center gap-4 text-sm md:text-base" key={index}><div className="rounded-full h-8 w-8 bg-black"></div>{comment}</div>)
+                            :"No Comments Yet ..."
+                        }
+                    </div>
+                    <form onSubmit={handleCommentSubmit} className="w-full flex">
+                        <input type="text" value={formData} onChange={(e)=>setFormData(e.target.value)} className="p-2 rounded-lg w-full" placeholder="Enter your comment" />
+                        <button type="submit" className="ml-2 flex justify-center items-center gap-2 px-4 border rounded-lg bg-white">Send <img height={24} width={24} src={SendIcon} alt="" /> </button>
+                    </form>
+                </div>:null
+                }
             </div>
             <EditModal open={openEdit} data={post} onClose={setOpenEdit}/>
         </div>
