@@ -30,11 +30,11 @@ const EditModal = ({open, onClose, data=null, createPost=false}) =>{
     const handleSubmit = async (e) =>{
         e.preventDefault();
         if(createPost){
-            await axios.post('https://banao-task-2-backend-zeta.vercel.app/post/create', formData);
+            await axios.post('https://banao-task-2-backend-lovat.vercel.app/post/create', formData);
             toast.success('Post Created');
             document.body.classList.remove('overflow-hidden');
         }else{
-            await axios.put('https://banao-task-2-backend-zeta.vercel.app/post/update', formData);
+            await axios.put('https://banao-task-2-backend-lovat.vercel.app/post/update', formData);
             toast.success('Post Updated');
             document.body.classList.remove('overflow-hidden');
         }
