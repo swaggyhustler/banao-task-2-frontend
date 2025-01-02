@@ -136,20 +136,20 @@ const Post = ({post}) => {
                 </div>
                 {
                     openComment?
-                    <div className="bg-slate-300 p-2 flex flex-col items-center gap-2 rounded-lg">
-                    <h1 className="self-start font-semibold text-xl ml-2">Comments</h1>
-                    <div className="w-full rounded-lg p-2 flex flex-col gap-2">
-                        {   
-                            comments.length>0?
-                            comments.map((comment, index)=> <div className="bg-white w-full rounded-lg p-2 flex items-center gap-4 text-sm md:text-base" key={index}><div className="rounded-full h-8 w-8 bg-black"></div>{comment}</div>)
-                            :"No Comments Yet ..."
-                        }
-                    </div>
-                    <form onSubmit={handleCommentSubmit} className="w-full flex">
-                        <input type="text" value={formData} onChange={(e)=>setFormData(e.target.value)} className="p-2 rounded-lg w-full" placeholder="Enter your comment" />
-                        <button type="submit" className="ml-2 flex justify-center items-center gap-2 px-4 border rounded-lg bg-white">Send <img height={24} width={24} src={SendIcon} alt="" /> </button>
-                    </form>
-                </div>:null
+                    <div className="bg-slate-300 p-2 flex flex-col items-center gap-2 rounded-lg h-full">
+                        <h1 className="self-start font-semibold text-xl ml-2 sticky top-0">Comments</h1>
+                        <div className="w-full rounded-lg p-2 flex flex-col gap-2 max-h-64 overflow-auto">
+                            {   
+                                comments.length>0?
+                                comments.map((comment, index)=> <div className="bg-white w-full rounded-lg p-2 flex items-center gap-4 text-sm md:text-base" key={index}><div className="rounded-full h-8 w-8 bg-black"></div>{comment}</div>)
+                                :"No Comments Yet ..."
+                            }
+                        </div>
+                        <form onSubmit={handleCommentSubmit} className="w-full flex">
+                            <input type="text" value={formData} onChange={(e)=>setFormData(e.target.value)} className="p-2 rounded-lg w-full" placeholder="Enter your comment" />
+                            <button type="submit" className="ml-2 flex justify-center items-center gap-2 px-4 border rounded-lg bg-white">Send <img height={24} width={24} src={SendIcon} alt="" /> </button>
+                        </form>
+                    </div>:null
                 }
             </div>
             <EditModal open={openEdit} data={post} onClose={setOpenEdit}/>
