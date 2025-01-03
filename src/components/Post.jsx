@@ -54,6 +54,7 @@ const Post = ({post}) => {
     useEffect(()=>{
         setLikes(post.likes);
         setLiked(false);
+        setOpenEdit(false);
     },[post, postType]);
 
     const handleCommentSubmit = async (e) => {

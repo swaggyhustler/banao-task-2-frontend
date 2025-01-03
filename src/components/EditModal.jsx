@@ -2,21 +2,25 @@ import axios from "axios";
 import { useEffect, useState, useContext } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
 import { toast } from "react-toastify";
+import MobileModal from "./MobileModal";
 
 const EditModal = ({open, onClose, data=null, createPost=false}) =>{
 
     const [formData, setFormData] = useState(null);
+    const [showMobileModal, setMobileModal] = useState(true);
     const {fetchData, isLogged, setShowSignUpModal} = useContext(GlobalContext);
 
     useEffect(()=>{
         setFormData(data);
-        
     }, [data]);
-
 
     if(!open) return null;
 
-    if(open && !isLogged){
+    if(open && !isLogged && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+        return <MobileModal open={showMobileModal} setOpen={setMobileModal}/>
+    }
+
+    if(open && !isLogged && !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
         onClose(false);
         document.body.classList.add('overflow-hidden');
         setShowSignUpModal(true);

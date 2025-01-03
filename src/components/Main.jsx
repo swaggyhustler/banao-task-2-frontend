@@ -1,8 +1,11 @@
 import Container from './Container';
 import Navbar from './Navbar';
-
+import SignupModal from './SignupModal';
+import {useContext} from 'react';
+import { GlobalContext } from '../contexts/GlobalContext';
 const Main = () => {
-    
+    const {showSignUpModal, setShowSignUpModal, setIsLogged} = useContext(GlobalContext);
+
     return (
         <div className="w-full flex justify-center items-center">
             <div className="w-[100%] md:w-[80%]">
@@ -13,6 +16,7 @@ const Main = () => {
                 <Navbar />
                 <Container />
             </div>
+            <SignupModal showSignUpModal={showSignUpModal} setShowSignUpModal={setShowSignUpModal} setIsLogged={setIsLogged} />
         </div>
     )
 }

@@ -1,14 +1,12 @@
 import { useContext, useState } from "react";
-import SignupModal from "./SignupModal";
 import { GlobalContext } from "../contexts/GlobalContext";
 import EditModal from "./EditModal";
 import { toast } from "react-toastify";
 
 const Navbar = () => {
-    const {isLogged, setIsLogged, setShowSignUpModal, showSignUpModal, setPostType} = useContext(GlobalContext);
+    const {isLogged, setShowSignUpModal, setPostType} = useContext(GlobalContext);
     const [createPost, setCreatePost] = useState(false);
     
-
     const handleJoinGroup = () =>{
         console.log(isLogged);
         if(!isLogged){
@@ -54,7 +52,7 @@ const Navbar = () => {
                 </svg>
             </button>
             <button className="py-2 px-5 bg-[#2F6CE5] rounded-md md:text-sm lg:text-base font-semibold text-white" onClick={handleJoinGroup}>Join Group</button>
-            <SignupModal showSignUpModal={showSignUpModal} setShowSignUpModal={setShowSignUpModal} setIsLogged={setIsLogged} />
+            
             <EditModal open={createPost} onClose={setCreatePost} createPost={true}/>
         </div>
     </div>
